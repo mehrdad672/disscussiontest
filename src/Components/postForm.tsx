@@ -4,7 +4,7 @@ type Props = {};
 
 const PostForm = (props: Props) => {
   return (
-    <div className="w-[700px] px-2 py-2 bg-gray-100 h-32 mx-auto rounded-t-lg space-x-4 border border-gray-200 flex justify-center items-center">
+    <div className="w-[700px] px-2 py-2 bg-gray-100 h-32 mx-auto rounded-t-lg space-x-4 border border-gray-100 flex justify-center items-center">
       <img
         className="w-12 h-12 rounded-full"
         src="https://s2.uupload.ir/files/me_um2w.jpg"
