@@ -45,7 +45,7 @@ const discussions: IDiscussion[] = [
           avatar:
             "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50",
         },
-        text: "Yes, that sounds good! I can think about this tomorrow. Then do we plan to start that compaign?",
+        text: "Yes, that sounds good! I can think about this tomorrow. When do we plan to start that compaign?",
         likes: 3,
         iLikedIt: true,
       },
