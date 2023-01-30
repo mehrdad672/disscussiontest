@@ -1,5 +1,6 @@
 import React from "react";
 import useTimeConvert from "../Components/useTimeConverter";
+import DummyAvatar from "./dummyAvatar";
 interface IUser {
   name: string;
   avatar?: string;
@@ -19,15 +20,15 @@ const Comment = ({ id, date, user, text, likes, iLikedIt }: IComment) => {
   return (
     <div className="flex mt-5 space-x-3">
         <div>
-        <img
+        {user.avatar? <img
           className="w-12 h-12 rounded-full"
           src={user.avatar}
           alt="useravatar"
-        />
+        />:<DummyAvatar userName={user.name}/>}
         </div>
       <div role="comment">
         <span className="flex items-center space-x-2">
-          <h5 className="font-bold text-gray-600 text-xl">{user.name}</h5>
+          <h5 className="font-bold text-gray-600 text-lg">{user.name}</h5>
           <h6 className="text-gray-400">{duration.toString()} ago</h6>
         </span>
         <p className="w-[450px] text-gray-500">{text}</p>
