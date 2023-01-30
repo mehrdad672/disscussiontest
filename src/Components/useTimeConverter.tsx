@@ -12,5 +12,5 @@
       hour >= 1 ? hour + "h" : ""
     } ${
       min >= 1 && hour === 0 && day === 0 && month === 0 ? min + "minutes" : ""
-    }`}
+    } ${month===0 && day===0 && hour===0 && min===0 && 'one minute' }`}
     export default useTimeConvert

@@ -1,11 +1,16 @@
 import React, { useState } from "react";
 import Comment from "./comment";
+import { likePost, postComment } from "./disSlice";
 import DummyAvatar from "./dummyAvatar";
+import { useAppDispatch } from "./store";
 import useTimeConvert from "./useTimeConverter";
 
 interface IUser {
   name: string;
   avatar?: string;
+}
+interface DId {
+    id:number
 }
 interface IComment {
   id: number;
@@ -18,25 +23,70 @@ interface IComment {
 interface IDiscussion extends IComment {
   replies: IComment[];
 }
-interface IProps {
-  comments: IComment[];
-}
 
+
+interface Props {
+  allDiscussions: IDiscussion[];
+  did: number;
+  date: number;
+  user: IUser;
+  text: string;
+  likes: number;
+  iLikedIt: boolean;
+  replies: IComment[];
+}
+interface postcomment extends IComment {
+  did: number;
+}
 const Discussion = ({
-  id,
+  did,
   date,
   user,
   text,
   likes,
   iLikedIt,
   replies,
-}: IDiscussion) => {
+}: Props) => {
+  const [enteredText, setEnteredText] = useState<string>("");
+  const dispatch = useAppDispatch();
   const duration = useTimeConvert(date).toString();
   const [replyActive, setReplyActive] = useState(false);
+
+  const submitHandler = (e: any) => {
+    e.preventDefault();
+    if (enteredText.trim().length === 0) {
+      return;
+    }
+    const curDate = new Date();
+
+    const newDiscussion: postcomment = {
+      id: Math.floor(Math.random() * 1000),
+      date: curDate.getTime(),
+      user: {
+        name: "Mehrdad Roienyan",
+        avatar: "https://s2.uupload.ir/files/me_um2w.jpg",
+      },
+      text: enteredText,
+      likes: 0,
+      iLikedIt: false,
+      did: did,
+    };
+    dispatch(postComment(newDiscussion));
+    setEnteredText("");
+  };
+const ID:DId ={
+    id:did
+}
+  const likeHandler=()=>{
+    dispatch(likePost(ID))
+  }
+
   const repliesList = replies.map(
     ({ id, date, user, text, likes, iLikedIt }) => {
       return (
         <Comment
+          did={did}
+          key={id}
           id={id}
           likes={likes}
           text={text}
@@ -50,11 +100,15 @@ const Discussion = ({
   return (
     <div className="w-[650px] flex space-x-2 mx-auto px-2 py-3 bg-white border border-gray-100 ">
       <div className="flex space-y-3 flex-col px-2 py-2 items-center justify-start">
-       {user.avatar? <img
-          className="w-12 h-12 rounded-full"
-          src={user.avatar}
-          alt="useravatar"
-        />:<DummyAvatar userName={user.name}/>}
+        {user.avatar ? (
+          <img
+            className="w-12 h-12 rounded-full"
+            src={user.avatar}
+            alt="useravatar"
+          />
+        ) : (
+          <DummyAvatar userName={user.name} />
+        )}
         {replies.length > 0 && (
           <div className="border flex-grow border-gray-300 w-[2px]"></div>
         )}
@@ -68,6 +122,7 @@ const Discussion = ({
           <p className="w-[500px] text-gray-500">{text}</p>
           <div className="flex items-center space-x-5">
             <button
+            onClick={likeHandler}
               className={` ${
                 iLikedIt ? "bg-blue-700" : "bg-gray-100"
               } flex space-x-2 border-transparent border hover:border-gray-300 items-center px-4 rounded-2xl mt-2 py-1 `}
@@ -115,11 +170,15 @@ const Discussion = ({
               src="https://s2.uupload.ir/files/me_um2w.jpg"
               alt="user avatar"
             />
-            <input
-              placeholder="Reply"
-              className="w-[450px] focus:outline-none focus:border-gray-600 px-4 h-12 rounded-lg border border-gray-200"
-              type="text"
-            />
+            <form onSubmit={submitHandler}>
+              <input
+                placeholder="Reply"
+                className="w-[450px] focus:outline-none focus:border-gray-600 px-4 h-12 rounded-lg border border-gray-200"
+                type="text"
+                value={enteredText}
+                onChange={(e) => setEnteredText(e.target.value)}
+              />
+            </form>
           </div>
         )}
       </div>

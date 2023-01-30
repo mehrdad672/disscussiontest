@@ -1,6 +1,8 @@
 import React from "react";
 import useTimeConvert from "../Components/useTimeConverter";
+import { likeComment } from "./disSlice";
 import DummyAvatar from "./dummyAvatar";
+import { useAppDispatch } from "./store";
 interface IUser {
   name: string;
   avatar?: string;
@@ -12,11 +14,19 @@ interface IComment {
   text: string;
   likes: number;
   iLikedIt: boolean;
+  did:number
 }
-
-const Comment = ({ id, date, user, text, likes, iLikedIt }: IComment) => {
+interface Id {
+  cid: number;
+  did: number;
+}
+const Comment = ({ id, date, user, text, likes, iLikedIt,did }: IComment) => {
   const duration = useTimeConvert(date);
-
+  const dispatch=useAppDispatch()
+  const likeHandler=()=>{
+    const ids:Id = {did:did,cid:id}
+dispatch(likeComment(ids))
+  }
   return (
     <div className="flex mt-5 space-x-3">
         <div>
@@ -33,7 +43,7 @@ const Comment = ({ id, date, user, text, likes, iLikedIt }: IComment) => {
         </span>
         <p className="w-[450px] text-gray-500">{text}</p>
         <div className="flex items-center space-x-5">
-          <button
+          <button onClick={likeHandler}
             className={` ${
               iLikedIt ? "bg-blue-700" : "bg-gray-100"
             } flex space-x-2 border-transparent border hover:border-gray-300 items-center px-4 rounded-2xl mt-2 py-1 `}

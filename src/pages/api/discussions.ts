@@ -1,5 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-import { useState } from 'react';
+import type { NextApiRequest, NextApiResponse } from "next";
 
 interface IUser {
   name: string;
@@ -17,7 +16,7 @@ interface IDiscussion extends IComment {
   replies: IComment[];
 }
 
-const [discussions,setDiscussions]=useState<IDiscussion[]>([
+const discussions: IDiscussion[] = [
   {
     id: 3,
     date: 1672576574000,
@@ -80,15 +79,8 @@ const [discussions,setDiscussions]=useState<IDiscussion[]>([
     iLikedIt: true,
     replies: [],
   },
-])
+];
 
-
-export default function handler(req:NextApiRequest, res:NextApiResponse) {
-    
-  if (req.method === "GET") {
-    res.status(200).json(discussions);
-  }
-  if (req.method === "POST") {
-    setDiscussions(req.body)
-  }
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
+  res.status(200).json(discussions);
 }
