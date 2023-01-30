@@ -4,9 +4,10 @@ import Discussion from "@/Components/discussion";
 import { useAppSelector } from "@/Components/store";
 
 export default function Home() {
-  const allDiscussion = useAppSelector((state) => state.disSlice.alldis);
-
-  const discussionsList = allDiscussion.map(
+  var allDiscussion = useAppSelector((state) => state.disSlice.alldis);
+  const sortedList =[...allDiscussion]
+  sortedList.sort(function(a, b){return b.date - a.date});
+  const discussionsList = sortedList.map(
     ({ id, date, user, text, likes, iLikedIt, replies }) => (
       <Discussion
         allDiscussions={allDiscussion}
